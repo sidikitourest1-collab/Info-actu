@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071a35">
+<title>MONDE 360 | Actualités mondiales</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--navy:#071a35;--blue:#1765e9;--cyan:#12b8d6;--red:#e83b48;--bg:#f2f5fa;--white:#fff;--text:#17263e;--muted:#718096;--border:#e5eaf1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}button{cursor:pointer}
+a{color:inherit}
+.top{background:#041329;color:#d6e0ed;padding:9px 5%;display:flex;justify-content:space-between;font-size:11px;gap:10px;flex-wrap:wrap}
+header{background:var(--navy);color:white;position:sticky;top:0;z-index:20}
+.head{max-width:1400px;margin:auto;padding:17px 4%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-family:Manrope;font-size:25px;font-weight:800;white-space:nowrap;text-decoration:none;color:white}
+.brand span{color:var(--cyan)}
+.brand small{display:block;font-size:9px;letter-spacing:2px;color:#9bb4d1}
+.search{flex:1;max-width:550px;display:flex}
+.search input{width:100%;padding:13px;border:0;border-radius:8px 0 0 8px;outline:0}
+.search button{padding:0 18px;background:var(--blue);color:white;border:0;border-radius:0 8px 8px 0}
+nav{background:#102a4b;display:flex;overflow-x:auto;padding:0 4%;scrollbar-width:none}
+nav button{background:none;color:#d3deec;border:0;padding:15px;font-size:11px;font-weight:800;white-space:nowrap}
+nav button.active{border-bottom:3px solid var(--cyan);color:white}
+.ticker{background:white;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--border)}
+.ticker b{background:var(--red);color:white;padding:13px 15px;font-size:10px;white-space:nowrap}
+#ticker{padding:10px 15px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+main{max-width:1400px;margin:auto;padding:25px 4%}
+.hero{background:linear-gradient(115deg,#071a35,#12518a);color:white;padding:30px;border-radius:14px;margin-bottom:25px}
+.hero h1{font-family:Manrope;font-size:clamp(26px,4vw,40px);margin:14px 0}
+.hero p{color:#c5d8ef;font-size:13px;line-height:1.8}
+.live{color:#37e5a1;font-size:11px;font-weight:800}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px;gap:10px}
+.section-title h2{font-family:Manrope;font-size:21px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
+.filters select,.filters button{background:white;border:1px solid var(--border);border-radius:7px;padding:11px 13px;font-size:12px}
+.filters button{background:var(--blue);color:white;border:0;font-weight:700}
+.filters button:disabled{opacity:.6;cursor:wait}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:22px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:white;border:1px solid var(--border);border-radius:11px;overflow:hidden;display:flex;flex-direction:column;transition:.2s;cursor:pointer;text-decoration:none;color:inherit}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 25px #102b4c12}
+.photo{height:175px;background:linear-gradient(135deg,#0c2445,#1765e9);position:relative;display:grid;place-items:center;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo i{font-size:42px;color:#ffffff70}
+.body{padding:15px;display:flex;flex:1;flex-direction:column}
+.source{font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase}
+.title{font-family:Manrope;font-size:14px;font-weight:800;line-height:1.55;margin:10px 0}
+.desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.meta{border-top:1px solid var(--border);padding-top:12px;margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--muted);gap:8px;flex-wrap:wrap}
+.read{color:var(--blue);font-weight:800}
+.side{display:flex;flex-direction:column;gap:16px}
+.box{background:white;border:1px solid var(--border);border-radius:11px;padding:17px}
+.box h3{font-size:14px;margin-bottom:13px}
+.source-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:9px 0;border-bottom:1px solid var(--border);gap:8px}
+.source-row:last-child{border-bottom:0}
+.ok{color:#0a9d70}.bad{color:#e43d4a}.wait{color:#c08a00}
+.loading,.empty{background:white;padding:45px 15px;text-align:center;color:var(--muted);grid-column:1/-1;border-radius:10px}
+.spinner{width:30px;height:30px;border:3px solid #ddd;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pagination{display:flex;justify-content:center;gap:8px;margin:25px;align-items:center}
+.pagination button{padding:9px 13px;background:white;border:1px solid var(--border);border-radius:6px}
+.pagination button:disabled{opacity:.4;cursor:not-allowed}
+.pagination span{font-size:11px;padding:0 8px}
+footer{background:#06172d;color:#9fb0c6;padding:35px 5%;text-align:center;font-size:12px;margin-top:35px}
+footer strong{color:white}
+/* PAGE ARTICLE */
+.article-view{max-width:820px;margin:0 auto;background:white;border-radius:12px;padding:30px;border:1px solid var(--border)}
+.article-view .back{display:inline-block;color:var(--blue);text-decoration:none;font-weight:700;font-size:12px;margin-bottom:20px}
+.article-view .badge{display:inline-block;background:var(--blue);color:white;font-size:10px;font-weight:800;padding:5px 10px;border-radius:4px;text-transform:uppercase;margin-bottom:12px}
+.article-view h1{font-family:Manrope;font-size:clamp(22px,3.5vw,32px);line-height:1.35;margin:0 0 15px}
+.article-view .ameta{color:var(--muted);font-size:12px;margin-bottom:25px;display:flex;gap:15px;flex-wrap:wrap}
+.article-view img{width:100%;max-height:460px;object-fit:cover;border-radius:10px;margin-bottom:25px}
+.article-view .content{line-height:1.9;font-size:15px;color:#334;white-space:pre-wrap;word-wrap:break-word}
+.article-view .orig{display:inline-block;background:var(--blue);color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:28px}
+.hidden{display:none!important}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.head{flex-wrap:wrap;padding:13px}.brand{font-size:21px}.search{order:3;max-width:none;flex-basis:100%}main{padding:17px 12px}.hero{padding:22px}.grid{grid-template-columns:1fr}.photo{height:195px}.side{grid-template-columns:1fr}.article-view{padding:20px}}
+</style>
+</head>
+<body>
+
+<div class="top">
+ <span>🌍 MONDE 360 — L'information sans frontières</span>
+ <span id="clock"></span>
+</div>
+
+<header>
+ <div class="head">
+  <a href="#/" class="brand" onclick="showHome();return false;">MONDE <span>360</span><small>L'INFORMATION SANS FRONTIÈRES</small></a>
+  <div class="search">
+   <input id="search" placeholder="Rechercher une information..." onkeydown="if(event.key==='Enter'){render();}">
+   <button onclick="render()"><i class="fa fa-search"></i></button>
+  </div>
+ </div>
+ <nav id="nav">
+  <button class="active" onclick="category('all',this)">ACCUEIL</button>
+  <button onclick="category('Mali',this)">MALI</button>
+  <button onclick="category('Côte d’Ivoire',this)">CÔTE D'IVOIRE</button>
+  <button onclick="category('Burkina Faso',this)">BURKINA FASO</button>
+  <button onclick="category('Sénégal',this)">SÉNÉGAL</button>
+  <button onclick="category('Niger',this)">NIGER</button>
+  <button onclick="category('Guinée',this)">GUINÉE</button>
+  <button onclick="category('Afrique',this)">AFRIQUE</button>
+  <button onclick="category('France',this)">FRANCE</button>
+  <button onclick="category('Monde',this)">MONDE</button>
+ </nav>
+</header>
+
+<div class="ticker">
+ <b>DERNIÈRES INFOS</b>
+ <div id="ticker">Chargement des actualités...</div>
+</div>
+
+<main>
+ <!-- VUE ACCUEIL -->
+ <div id="homeView">
+  <section class="hero">
+   <div class="live">● ACTUALITÉS MULTISOURCES EN DIRECT</div>
+   <h1>Toute l'actualité du monde, au même endroit.</h1>
+   <p>Découvrez les publications de plusieurs médias internationaux et africains. Mali, Afrique, Europe, Asie et Amériques.</p>
+  </section>
+
+  <div class="section-title">
+   <h2 id="heading">Les dernières publications</h2>
+   <span id="count" style="font-size:11px;color:#718096">0 article</span>
+  </div>
+
+  <div class="filters">
+   <select id="country" onchange="render()">
+    <option value="all">Tous les pays</option>
+    <option value="Mali">Mali</option>
+    <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+    <option value="Burkina Faso">Burkina Faso</option>
+    <option value="Sénégal">Sénégal</option>
+    <option value="Niger">Niger</option>
+    <option value="Guinée">Guinée</option>
+    <option value="Afrique">Afrique</option>
+    <option value="France">France</option>
+    <option value="Monde">Monde</option>
+   </select>
+   <select id="order" onchange="render()">
+    <option value="new">Plus récents</option>
+    <option value="old">Plus anciens</option>
+   </select>
+   <button id="refreshBtn" onclick="loadAll()"><i class="fa fa-refresh"></i> Actualiser les sources</button>
+  </div>
+
+  <div class="layout">
+   <section>
+    <div class="grid" id="articles">
+     <div class="loading"><div class="spinner"></div>Récupération des publications...</div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+   </section>
+   <aside class="side">
+    <div class="box">
+     <h3><i class="fa fa-satellite-dish"></i> État des médias</h3>
+     <div id="sourcesStatus"></div>
+    </div>
+    <div class="box">
+     <h3><i class="fa fa-fire"></i> Les plus récents</h3>
+     <div id="recent"></div>
+    </div>
+    <div class="box">
+     <h3><i class="fa fa-circle-info"></i> À propos des sources</h3>
+     <p style="font-size:11px;line-height:1.7;color:#718096">MONDE 360 rassemble les titres, extraits et images disponibles dans les flux publics des médias. Les articles complets restent accessibles sur les sites originaux.</p>
+    </div>
+   </aside>
+  </div>
+ </div>
+
+ <!-- VUE ARTICLE -->
+ <div id="articleView" class="hidden">
+  <div class="article-view" id="articleContent"></div>
+ </div>
+</main>
+
+<footer>
+ <strong>MONDE 360</strong><br>
+ L'information sans frontières.<br><br>
+ © <span id="year"></span> MONDE 360
+</footer>
+
+<script>
+"use strict";
+
+/* Sources RSS (aucune clé, aucun backend) */
+const SOURCES=[
+ {name:"France 24",url:"https://www.france24.com/fr/rss",country:"Monde"},
+ {name:"France 24 Afrique",url:"https://www.france24.com/fr/afrique/rss",country:"Afrique"},
+ {name:"RFI Afrique",url:"https://www.rfi.fr/fr/afrique/rss",country:"Afrique"},
+ {name:"RFI Monde",url:"https://www.rfi.fr/fr/rss",country:"Monde"},
+ {name:"BBC News Afrique",url:"https://feeds.bbci.co.uk/news/world/africa/rss.xml",country:"Afrique"},
+ {name:"Google News Mali",url:"https://news.google.com/rss/search?q=Mali+actualites&hl=fr&gl=ML&ceid=ML:fr",country:"Mali"},
+ {name:"Google News Côte d'Ivoire",url:"https://news.google.com/rss/search?q=Cote+dIvoire+actualites&hl=fr&gl=CI&ceid=CI:fr",country:"Côte d'Ivoire"},
+ {name:"Google News Burkina Faso",url:"https://news.google.com/rss/search?q=Burkina+Faso+actualites&hl=fr&gl=BF&ceid=BF:fr",country:"Burkina Faso"},
+ {name:"Google News Sénégal",url:"https://news.google.com/rss/search?q=Senegal+actualites&hl=fr&gl=SN&ceid=SN:fr",country:"Sénégal"},
+ {name:"Google News Niger",url:"https://news.google.com/rss/search?q=Niger+actualites&hl=fr&gl=NE&ceid=NE:fr",country:"Niger"},
+ {name:"Google News Guinée",url:"https://news.google.com/rss/search?q=Guinee+actualites&hl=fr&gl=GN&ceid=GN:fr",country:"Guinée"},
+ {name:"Le Monde Afrique",url:"https://news.google.com/rss/search?q=site:lemonde.fr+afrique&hl=fr&gl=FR&ceid=FR:fr",country:"Afrique"}
+];
+
+const PASSERELLES=[
+ url=>"https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(url),
+ url=>"https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+ url=>"https://corsproxy.io/?url="+encodeURIComponent(url)
+];
+
+let articles=[];
+let currentCategory="all";
+let page=1;
+const PAGE_SIZE=12;
+let loading=false;
+const status={};
+const $=id=>document.getElementById(id);
+const LS_KEY="monde360_articles_v1";
+
+/* --- Nettoyage --- */
+function cleanText(html){
+ const d=document.createElement("div");
+ d.innerHTML=html||"";
+ d.querySelectorAll("script,style,iframe,form,object,embed").forEach(e=>e.remove());
+ return (d.textContent||"").replace(/\s+/g," ").trim();
+}
+function escapeHtml(v){return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+function safeURL(u){try{const x=new URL(u,location.href);return ["http:","https:"].includes(x.protocol)?x.href:"";}catch{return "";}}
+function extractImage(item){
+ if(item.thumbnail)safeURL(item.thumbnail)&&(item.thumbnail=safeURL(item.thumbnail));
+ if(item.thumbnail)return item.thumbnail;
+ if(item.enclosure?.link){const u=safeURL(item.enclosure.link);if(u)return u;}
+ const html=item.description||item.content||"";
+ const m=html.match(/<img[^>]+src=["']([^"']+)/i);
+ return m?safeURL(m[1]):"";
+}
+
+/* --- Parsing XML RSS natif (fallback sans passerelle) --- */
+function parseRSSNative(xmlText,source){
+ const doc=new DOMParser().parseFromString(xmlText,"text/xml");
+ const items=[...doc.querySelectorAll("item, entry")];
+ return items.map(it=>{
+  const get=(tag)=>{const el=it.querySelector(tag);return el?(el.textContent||"").trim():"";};
+  const linkEl=it.querySelector("link");
+  let link=get("link");
+  if(!link&&linkEl)link=linkEl.getAttribute("href")||"";
+  const dateStr=get("pubDate")||get("published")||get("updated")||"";
+  const date=new Date(dateStr);
+  const desc=get("description")||get("summary")||get("content")||"";
+  let img="";
+  const media=it.querySelector("enclosure, media\\:content, media\\:thumbnail");
+  if(media){const u=media.getAttribute("url");if(u)img=u;}
+  if(!img){const m=desc.match(/<img[^>]+src=["']([^"']+)/i);if(m)img=m[1];}
+  return{
+   id:safeURL(link),
+   title:cleanText(get("title")),
+   description:cleanText(desc).slice(0,320),
+   content:cleanText(desc).slice(0,4000),
+   link:safeURL(link),
+   image:safeURL(img),
+   date:isNaN(date)?new Date():date,
+   source:source.name,
+   country:source.country
+  };
+ }).filter(a=>a.link&&a.title);
+}
+
+async function fetchRSS(source){
+ for(const make of PASSERELLES){
+  try{
+   const r=await fetch(make(source.url),{signal:AbortSignal.timeout?AbortSignal.timeout(15000):undefined});
+   if(!r.ok)throw new Error("HTTP "+r.status);
+   const txt=await r.text();
+   if(txt.trim().startsWith("{")){
+    const j=JSON.parse(txt);
+    if(j.status==="ok"&&Array.isArray(j.items)){
+     return j.items.map(it=>({
+      id:safeURL(it.link),
+      title:cleanText(it.title),
+      description:cleanText(it.description||it.content).slice(0,320),
+      content:cleanText(it.content||it.description).slice(0,4000),
+      link:safeURL(it.link),
+      image:extractImage(it),
+      date:new Date(it.pubDate||Date.now()),
+      source:source.name,
+      country:source.country
+     })).filter(a=>a.link&&a.title);
+    }
+    if(j.contents){
+     return parseRSSNative(j.contents,source);
+    }
+    throw new Error("Réponse inattendue");
+   }
+   if(txt.includes("<rss")||txt.includes("<feed")){
+    return parseRSSNative(txt,source);
+   }
+   throw new Error("Contenu non XML");
+  }catch(e){
+   console.warn("Passerelle échouée pour",source.name,e.message);
+  }
+ }
+ throw new Error("Toutes les passerelles ont échoué");
+}
+
+function showSourceStatus(){
+ $("sourcesStatus").innerHTML=SOURCES.map(s=>{
+  const st=status[s.name]||"waiting";
+  const icon=st==="ok"?"fa-circle-check":st==="error"?"fa-circle-xmark":"fa-clock";
+  const cls=st==="ok"?"ok":st==="error"?"bad":"wait";
+  const label=st==="ok"?"Connecté":st==="error"?"Indisponible":"En attente";
+  return `<div class="source-row"><span>${escapeHtml(s.name)}</span><span class="${cls}"><i class="fa-solid ${icon}"></i> ${label}</span></div>`;
+ }).join("");
+}
+
+function saveCache(){
+ try{localStorage.setItem(LS_KEY,JSON.stringify(articles.slice(0,200)));}catch(e){}
+}
+function loadCache(){
+ try{
+  const raw=localStorage.getItem(LS_KEY);
+  if(!raw)return;
+  const data=JSON.parse(raw);
+  if(Array.isArray(data)&&data.length){
+   articles=data.map(a=>({...a,date:new Date(a.date)}));
+   render();
+   $("ticker").textContent=articles.slice(0,8).map(a=>a.title).join("  •  ");
+  }
+ }catch(e){}
+}
+
+async function loadAll(){
+ if(loading)return;
+ loading=true;
+ const btn=$("refreshBtn");
+ if(btn){btn.disabled=true;btn.innerHTML='<i class="fa fa-spinner fa-spin"></i> Chargement...';}
+
+ $("articles").innerHTML='<div class="loading"><div class="spinner"></div>Connexion aux médias...</div>';
+ showSourceStatus();
+
+ const results=await Promise.allSettled(SOURCES.map(async s=>{
+  try{
+   const data=await fetchRSS(s);
+   status[s.name]="ok";
+   return data;
+  }catch(e){
+   status[s.name]="error";
+   return [];
+  }finally{
+   showSourceStatus();
+  }
+ }));
+
+ const seen=new Set(articles.map(a=>a.id));
+ let nouveaux=0;
+ results.forEach(r=>{
+  if(r.status==="fulfilled"&&Array.isArray(r.value)){
+   r.value.forEach(a=>{
+    if(a.id&&!seen.has(a.id)){articles.push(a);seen.add(a.id);nouveaux++;}
+   });
+  }
+ });
+
+ articles.sort((a,b)=>b.date-a.date);
+ saveCache();
+
+ $("count").textContent=articles.length+" articles";
+ $("ticker").textContent=articles.slice(0,8).map(a=>a.title).join("  •  ");
+ $("recent").innerHTML=articles.slice(0,5).map(a=>
+  `<div style="padding:10px 0;border-bottom:1px solid #eee;font-size:11px;font-weight:700;cursor:pointer" onclick="showArticle('${encodeURIComponent(a.id)}')">${escapeHtml(a.title)}<div style="color:#718096;font-size:10px;margin-top:5px;font-weight:400">${escapeHtml(a.source)}</div></div>`
+ ).join("");
+
+ $("heading").textContent="Publications des médias";
+ if(articles.length===0){
+  $("articles").innerHTML='<div class="empty">Aucune source disponible pour le moment.<br><br>Vérifiez votre connexion puis réessayez.</div>';
+  $("pagination").innerHTML="";
+ }else{
+  render();
+ }
+
+ loading=false;
+ if(btn){btn.disabled=false;btn.innerHTML='<i class="fa fa-refresh"></i> Actualiser les sources';}
+}
+
+function render(){
+ const q=$("search").value.toLowerCase().trim();
+ const country=$("country").value;
+ const order=$("order").value;
+
+ let filtered=articles.filter(a=>{
+  const text=(a.title+" "+a.description+" "+a.source+" "+a.country).toLowerCase();
+  const searchMatch=!q||text.includes(q);
+  const countryMatch=country==="all"||(a.country||"").toLowerCase().includes(country.toLowerCase())||text.includes(country.toLowerCase());
+  const catMatch=currentCategory==="all"||text.includes(currentCategory.toLowerCase())||(a.country||"").toLowerCase()===currentCategory.toLowerCase();
+  return searchMatch&&countryMatch&&catMatch;
+ });
+
+ filtered.sort((a,b)=>order==="old"?a.date-b.date:b.date-a.date);
+ const total=Math.ceil(filtered.length/PAGE_SIZE)||1;
+ page=Math.min(page,Math.max(1,total));
+ const selected=filtered.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+ $("count").textContent=filtered.length+" publications";
+
+ if(!selected.length){
+  $("articles").innerHTML='<div class="empty"><i class="fa fa-newspaper"></i><br><br>Aucune publication ne correspond à cette recherche.</div>';
+  $("pagination").innerHTML="";
+  return;
+ }
+
+ $("articles").innerHTML=selected.map(a=>`
+  <a class="card" href="#/article/${encodeURIComponent(a.id)}" onclick="showArticle('${encodeURIComponent(a.id)}');return false;">
+   <div class="photo">
+    ${a.image?`<img src="${escapeHtml(a.image)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'<i class="fa-solid fa-newspaper"></i>'}
+   </div>
+   <div class="body">
+    <div class="source"><i class="fa-solid fa-globe"></i> ${escapeHtml(a.source)}</div>
+    <h3 class="title">${escapeHtml(a.title)}</h3>
+    <p class="desc">${escapeHtml(a.description||"Consultez la publication originale pour plus de détails.")}</p>
+    <div class="meta">
+     <span>${a.date.toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"})}</span>
+     <span class="read">Lire l'article →</span>
+    </div>
+   </div>
+  </a>
+ `).join("");
+
+ $("pagination").innerHTML=total>1?
+  `<button onclick="changePage(-1)" ${page===1?"disabled":""}>← Précédent</button>
+   <span>Page ${page} / ${total}</span>
+   <button onclick="changePage(1)" ${page===total?"disabled":""}>Suivant →</button>`:"";
+}
+
+function changePage(d){page+=d;render();window.scrollTo({top:450,behavior:"smooth"});}
+
+function category(value,button){
+ currentCategory=value;
+ page=1;
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ $("heading").textContent=value==="all"?"Toutes les actualités":"Actualités : "+value;
+ showHome();
+ render();
+}
+
+/* --- Affichage d'un article (vraie page interne) --- */
+function showArticle(encodedId){
+ const id=decodeURIComponent(encodedId);
+ const a=articles.find(x=>x.id===id);
+ if(!a){alert("Article introuvable.");return;}
+
+ $("homeView").classList.add("hidden");
+ $("articleView").classList.remove("hidden");
+
+ const dateStr=a.date.toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"});
+ const imgHtml=a.image?`<img src="${escapeHtml(a.image)}" alt="" onerror="this.style.display='none'">`:"";
+ const contenu=a.content&&a.content.length>a.description.length?a.content:(a.description||"Consultez la source originale pour lire l'article complet.");
+
+ $("articleContent").innerHTML=`
+  <a class="back" href="#/" onclick="showHome();return false;">← Retour à l'accueil</a>
+  <div class="badge">${escapeHtml(a.country||"Monde")}</div>
+  <h1>${escapeHtml(a.title)}</h1>
+  <div class="ameta">
+   <span>📰 ${escapeHtml(a.source)}</span>
+   <span>🕒 ${dateStr}</span>
+  </div>
+  ${imgHtml}
+  <div class="content">${escapeHtml(contenu)}</div>
+  <a class="orig" href="${escapeHtml(a.link)}" target="_blank" rel="noopener noreferrer">Lire l'article original sur ${escapeHtml(a.source)} ↗</a>
+ `;
+
+ window.location.hash="#/article/"+encodedId;
+ window.scrollTo({top:0,behavior:"smooth"});
+ document.title=a.title+" | MONDE 360";
+}
+
+function showHome(){
+ $("articleView").classList.add("hidden");
+ $("homeView").classList.remove("hidden");
+ window.location.hash="#/";
+ document.title="MONDE 360 | Actualités mondiales";
+}
+
+/* --- Routage URL (#/article/...) --- */
+function routeFromHash(){
+ const h=window.location.hash||"#/";
+ const m=h.match(/^#\/article\/(.+)$/);
+ if(m){
+  showArticle(m[1]);
+ }else{
+  showHome();
+ }
+}
+
+/* --- Horloge & init --- */
+$("year").textContent=new Date().getFullYear();
+function clock(){$("clock").textContent=new Date().toLocaleString("fr-FR");}
+clock();setInterval(clock,1000);
+
+window.addEventListener("hashchange",routeFromHash);
+window.addEventListener("online",loadAll);
+
+loadCache();
+loadAll();
+setInterval(()=>{if(!document.hidden&&navigator.onLine)loadAll();},300000);
+</script>
+</body>
+</html>
